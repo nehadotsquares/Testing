@@ -22,4 +22,9 @@ class Post extends Model
     {
         return $this->morphOne(Upload::class, 'uploadable')->where('file_type', 'pdf');
     }
+
+    public function details()
+    {
+        return $this->hasOne(PostDetail::class);
+    }
 }

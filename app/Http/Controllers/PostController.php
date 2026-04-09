@@ -75,7 +75,7 @@ class PostController extends Controller
 
             $post->upload()->create([
                 'file_path' => $path,
-                'file_type' => $file->getClientOriginalExtension(),
+                'file_type' => 'image',
             ]);
         }
 
@@ -89,6 +89,20 @@ class PostController extends Controller
                 'file_type' => 'pdf',
             ]);
         }
+
+        $post->details()->create([
+            'ckeditor' => $request->ckeditor,
+            'number' => $request->number,
+            'category' => $request->category,
+            'status' => $request->status,
+            'tags' => $request->tags,   // array
+            'publish_date' => $request->publish_date,
+            'publish_time' => $request->publish_time,
+            'rating' => $request->rating,
+            'color' => $request->color,
+        ]);
+
+
         // Dispatch Job (Queue)
         SendPostNotification::dispatch($post);
 
@@ -100,6 +114,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        $post->load('details','upload', 'pdf');
         return view('posts.show', compact('post'));
     }
 
@@ -111,6 +126,8 @@ class PostController extends Controller
         if ($post->user_id !== Auth::id()) {
             abort(403);
         }
+
+        $post->load('details');
 
         return view('posts.edit', compact('post'));
     }
@@ -164,6 +181,21 @@ class PostController extends Controller
                 'file_type' => 'pdf',
             ]);
         }
+
+        $post->details()->updateOrCreate(
+            ['post_id' => $post->id],  
+            [
+                'ckeditor' => $request->ckeditor,
+                'number' => $request->number,
+                'category' => $request->category,
+                'status' => $request->status,
+                'tags' => $request->tags,
+                'publish_date' => $request->publish_date,
+                'publish_time' => $request->publish_time,
+                'rating' => $request->rating,
+                'color' => $request->color,
+            ]
+        );
 
         return redirect()->route('posts.index')->with('success', 'Post updated successfully');
     }

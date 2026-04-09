@@ -73,6 +73,70 @@
             });
         });
     </script>
+    <!-- <script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script> -->
+    <!-- <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script> -->
+     <script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/classic/ckeditor.js"></script>
+    <script>
+        document.querySelectorAll('.editor').forEach((el) => {
+            ClassicEditor
+                .create(el, {
+                    // ckfinder: {
+                    //     uploadUrl: "{{ route('ckeditor.upload') }}?_token={{ csrf_token() }}"
+                    // }
+                    extraPlugins: [ MyCustomUploadAdapterPlugin ]
+                })
+                .catch(error => {
+                    console.error(error);
+                });
+        });
+
+        class MyUploadAdapter {
+            constructor(loader) {
+                this.loader = loader;
+            }
+
+            upload() {
+                return this.loader.file.then(file => {
+                    const data = new FormData();
+                    data.append('upload', file);
+                    data.append('_token', '{{ csrf_token() }}');
+
+                    return fetch("{{ route('ckeditor.upload') }}", {
+                        method: 'POST',
+                        body: data
+                    })
+                    .then(res => res.json())
+                    .then(res => ({
+                        default: res.default   // required key
+                    }));
+                });
+            }
+
+            abort() {}
+        }
+
+        function MyCustomUploadAdapterPlugin(editor) {
+            editor.plugins.get('FileRepository').createUploadAdapter = loader => {
+                return new MyUploadAdapter(loader);
+            };
+        }
+    </script>
+
+    <!-- rating number -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const slider = document.getElementById('rating');
+            const output = document.getElementById('ratingValue');
+
+            if (slider) {
+                output.textContent = slider.value;
+
+                slider.addEventListener('input', function () {
+                    output.textContent = this.value;
+                });
+            }
+        });
+    </script>
     @yield('scripts')
 </body>
 </html>

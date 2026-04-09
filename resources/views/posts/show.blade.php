@@ -21,7 +21,7 @@
                 <hr>
 
                 <p class="card-text">
-                    {{ $post->content }}
+                    {!! $post->content !!}
                 </p>
 
                 @if($post->upload || $post->pdf)
@@ -40,6 +40,58 @@
                             </a>
                         @endif
                     </div>
+                @endif
+
+                <hr>
+
+                <h5>Additional Information</h5>
+
+                @if($post->details)
+                    <p><strong>CKEditor:</strong></p>
+                    <div class="border p-2">{!! $post->details->ckeditor !!}</div>
+
+                    <p class="mt-2">
+                        <strong>Number:</strong> {{ $post->details->number }}
+                    </p>
+
+                    <p>
+                        <strong>Category:</strong> {{ ucfirst($post->details->category) }}
+                    </p>
+
+                    <p>
+                        <strong>Status:</strong> 
+                        <span class="badge bg-{{ $post->details->status == 'active' ? 'success' : 'secondary' }}">
+                            {{ ucfirst($post->details->status) }}
+                        </span>
+                    </p>
+
+                    <p>
+                        <strong>Tags:</strong> 
+                        @foreach($post->details->tags ?? [] as $tag)
+                            <span class="badge bg-primary">{{ $tag }}</span>
+                        @endforeach
+                    </p>
+
+                    <p>
+                        <strong>Publish Date:</strong> {{ $post->details->publish_date }}
+                    </p>
+
+                    <p>
+                        <strong>Publish Time:</strong> {{ $post->details->publish_time }}
+                    </p>
+
+                    <p>
+                        <strong>Rating:</strong> {{ $post->details->rating }}/10
+                    </p>
+
+                    <p>
+                        <strong>Color:</strong> 
+                        <span style="padding: 4px 20px; border-radius: 5px; display:inline-block; background: {{ $post->details->color }}; "></span>
+                        {{ $post->details->color }}
+                    </p>
+
+                @else
+                    <p class="text-muted">No additional details available.</p>
                 @endif
                 
             </div>

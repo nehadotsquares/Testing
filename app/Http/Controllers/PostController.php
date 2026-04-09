@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Post;
+use App\Models\Upload;
 use App\Jobs\SendPostNotification;
 use Illuminate\Support\Facades\Auth;
 use Yajra\DataTables\Facades\DataTables;
@@ -29,12 +30,12 @@ class PostController extends Controller
                     return $post->user->name;
                 })
                 ->addColumn('action', function(Post $post) {
-                    $view = '<a href="'.route('posts.show', $post->id).'" class="btn btn-info btn-sm me-1">View</a>';
-                    $edit = '<a href="'.route('posts.edit', $post->id).'" class="btn btn-primary btn-sm me-1">Edit</a>';
+                    $view = '<a href="'.route('posts.show', $post->id).'" class="btn btn-info btn-sm me-1"><i class="fa fa-eye"></i></a>';
+                    $edit = '<a href="'.route('posts.edit', $post->id).'" class="btn btn-primary btn-sm me-1"><i class="fa fa-pen"></i></a>';
                     $delete = '<form action="'.route('posts.destroy', $post->id).'" method="POST" style="display:inline" class="delete-form d-inline">'
                             . csrf_field()
                             . method_field('DELETE')
-                            . '<button class="btn btn-danger btn-sm delete-btn" type="button">Delete</button></form>';
+                            . '<button class="btn btn-danger btn-sm delete-btn" type="button"><i class="fa fa-trash"></i></button></form>';
                     return '<div class="d-flex gap-1">'.$view.$edit.$delete.'</div>';
                 })
                 ->rawColumns(['action'])
@@ -78,6 +79,18 @@ class PostController extends Controller
                 'file_type' => 'image',
             ]);
         }
+        
+        //post images
+        if ($request->hasFile('post_images')) {
+            foreach ($request->file('post_images') as $file) {
+                $path = $file->store('uploads/post_images', 'public');
+
+                $post->upload()->create([
+                    'file_path' => $path,
+                    'file_type' => 'post_image',
+                ]);
+            }
+        }
 
         // PDF upload
         if ($request->hasFile('pdf_file')) {
@@ -114,7 +127,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        $post->load('details','upload', 'pdf');
+        $post->load('details','upload', 'pdf', 'postImages');
         return view('posts.show', compact('post'));
     }
 
@@ -166,6 +179,27 @@ class PostController extends Controller
                 'file_type' => 'image', // $file->getClientOriginalExtension(),
             ]);
         }
+        // post images
+        if ($request->delete_images) {
+            foreach ($request->delete_images as $id) {
+                $img = Upload::find($id);
+                Storage::disk('public')->delete($img->file_path);
+                $img->delete();
+            }
+        }
+
+        if ($request->hasFile('post_images')) {
+            foreach ($request->file('post_images') as $file) {
+
+                $path = $file->store('uploads/post_images', 'public');
+
+                $post->upload()->create([
+                    'file_path' => $path,
+                    'file_type' => 'post_image',
+                ]);
+            }
+        }
+        
         // for pdf
         if ($request->hasFile('pdf_file')) {
             if ($post->pdf) {

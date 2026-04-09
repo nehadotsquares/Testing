@@ -46,15 +46,43 @@
                     </div>
 
                     @if($post->upload && in_array($post->upload->file_type, ['image']))
+                        <h6>Existing Image:</h6>
                         <a href="{{ asset('storage/' . $post->upload->file_path) }}" target="_blank">
                             <img src="{{ asset('storage/' . $post->upload->file_path) }}" width="150" class="mt-2">
                         </a>
                     @endif
 
                     <div class="mb-3">
-                        <label class="form-label">Upload File</label>
+                        <label class="form-label">Upload Feature Image</label>
                         <input type="file" name="file" class="form-control" accept=".jpg,.jpeg,.png">
                         @error('file')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    @if($post->postImages->count())
+                        <div class="mt-3">
+                            <h6>Existing Images:</h6>
+
+                            @foreach($post->postImages as $img)
+                                <div class="me-2 mb-2">
+                                    <img src="{{ asset('storage/' . $img->file_path) }}" width="120" class="rounded border">
+
+                                    <!-- Optional: Delete checkbox -->
+                                    <label class="ms-2">
+                                        <input type="checkbox" name="delete_images[]" value="{{ $img->id }}">
+                                        Delete
+                                    </label>
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+
+                    <div class="mb-3">
+                        <label class="form-label">Upload Images</label>
+                        <input type="file" name="post_images[]" multiple class="form-control" accept=".jpg,.jpeg,.png">
+
+                        @error('post_images')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>

@@ -30,7 +30,7 @@
 
                         @if($post->upload)                      
                             <a href="{{ asset('storage/' . $post->upload->file_path) }}" target="_blank" class="btn btn-outline-info btn-sm mb-1">
-                                View File
+                                View Feature Image
                             </a>
                         @endif
 
@@ -39,6 +39,20 @@
                                 View PDF
                             </a>
                         @endif
+                    </div>
+                @endif
+
+                @if($post->postImages->count() > 0)
+                    <div class="mt-3">
+                        <h6>Post Images:</h6>
+
+                        @foreach($post->postImages as $image)
+                            <a href="{{ asset('storage/' . $image->file_path) }}" target="_blank" class="mb-1">
+                            <img src="{{ asset('storage/' . $image->file_path) }}" 
+                                alt="Post Image" 
+                                style="width:100px; margin:5px;">
+                            </a>
+                        @endforeach
                     </div>
                 @endif
 

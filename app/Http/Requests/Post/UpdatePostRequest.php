@@ -27,6 +27,9 @@ class UpdatePostRequest extends FormRequest
             'title' => 'required|string|min:10|max:255',
             'content' => 'required|string|min:15',
             'file' => 'nullable|file|mimes:jpg,jpeg,png|max:2048',
+            'post_images.*' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+            'delete_images'   => 'array',
+            'delete_images.*' => 'exists:uploads,id',
             'pdf_file'   => 'nullable|file|mimes:pdf|max:5120', 
 
             // additional fields
@@ -53,6 +56,10 @@ class UpdatePostRequest extends FormRequest
             'file.file' => 'The uploaded file must be a valid file.',
             'file.mimes' => 'Only JPG, JPEG, and PNG files are allowed.',
             'file.max' => 'File size must not exceed 2MB.',
+            'post_images.required' => 'Please select at least one file.',
+            'post_images.array' => 'Files must be an array.',
+            'post_images.*.mimes' => 'Only JPG, JPEG, PNG, and PDF files are allowed.',
+            'post_images.*.max' => 'Each file must not exceed 5MB.',
             'pdf_file.file' => 'The uploaded PDF must be a valid file.',
             'pdf_file.mimes' => 'Only PDF files are allowed.',
 

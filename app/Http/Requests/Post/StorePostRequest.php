@@ -26,6 +26,8 @@ class StorePostRequest extends FormRequest
             'title' => 'required|string|min:10|max:255',
             'content' => 'required|string|min:15',
             'file' => 'required|mimes:jpg,jpeg,png|max:2048',
+            'post_images' => 'required|array',
+            'post_images.*' => 'mimes:jpg,jpeg,png,pdf|max:5120',
             'pdf_file'   => 'required|file|mimes:pdf|max:5120',
 
             // additional fields
@@ -55,6 +57,11 @@ class StorePostRequest extends FormRequest
             'file.file' => 'The uploaded file must be a valid file.',
             'file.mimes' => 'Only JPG, JPEG, and PNG files are allowed.',
             'file.max' => 'File size must not exceed 2MB.',
+
+            'post_images.required' => 'Please select at least one file.',
+            'post_images.array' => 'Files must be an array.',
+            'post_images.*.mimes' => 'Only JPG, JPEG, PNG, and PDF files are allowed.',
+            'post_images.*.max' => 'Each file must not exceed 5MB.',
 
             'pdf_file.required' => 'PDF file is required.',
             'pdf_file.file' => 'The uploaded PDF must be a valid file.',

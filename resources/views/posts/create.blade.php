@@ -42,9 +42,17 @@
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Upload File</label>
+                        <label class="form-label">Featured Image</label>
                         <input type="file" name="file" class="form-control" accept=".jpg,.jpeg,.png">
                         @error('file')
+                            <div class="text-danger">{{ $message }}</div>
+                        @enderror
+                    </div>
+
+                    <div class="mb-3">
+                        <label class="form-label">Upload Images</label>
+                        <input type="file" name="post_images[]" multiple class="form-control" accept=".jpg,.jpeg,.png">
+                        @error('post_images')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
                     </div>

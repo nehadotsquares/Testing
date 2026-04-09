@@ -8,6 +8,8 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Queue\SerializesModels;
 use App\Models\Post;
+use Illuminate\Support\Facades\Mail;
+use App\Mail\PostCreatedMail;
 
 class SendPostNotification implements ShouldQueue
 {
@@ -26,6 +28,7 @@ class SendPostNotification implements ShouldQueue
      */
     public function handle(): void
     {
+        Mail::to($this->post->user->email)->send(new PostCreatedMail($this->post));
         \Log::info('Post created: ' . $this->post->title);
     }
 }

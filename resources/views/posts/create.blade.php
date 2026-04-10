@@ -68,7 +68,7 @@
                     <div class="mb-3">
                         <h5>Additional Input Fields</h5>
                         <label>CkEditor</label>
-                        <textarea name="ckeditor" class="form-control editor">{{ old('content') }}</textarea>
+                        <textarea name="ckeditor" class="form-control editor">{{ old('ckeditor') }}</textarea>
                         @error('ckeditor')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -86,9 +86,9 @@
                         <label class="form-label">Category</label>
                         <select name="category" class="form-control">
                             <option value="">Select category</option>
-                            <option value="tech">Tech</option>
-                            <option value="news">News</option>
-                            <option value="sports">Sports</option>
+                            <option value="tech" {{ old('category') == 'tech' ? 'selected' : '' }}>Tech</option>
+                            <option value="news" {{ old('category') == 'news' ? 'selected' : '' }}>News</option>
+                            <option value="sports" {{ old('category') == 'sports' ? 'selected' : '' }}>Sports</option>
                         </select>
                         @error('category')
                             <div class="text-danger">{{ $message }}</div>
@@ -97,8 +97,8 @@
 
                     <div class="mb-3">
                         <label class="form-label">Status</label><br>
-                        <label><input type="radio" name="status" value="active"> Active</label>
-                        <label class="ms-3"><input type="radio" name="status" value="inactive"> Inactive</label>
+                        <label><input type="radio" name="status" value="active" {{ old('status') == 'active' ? 'checked' : '' }}> Active</label>
+                        <label class="ms-3"><input type="radio" name="status" value="inactive" {{ old('status') == 'inactive' ? 'checked' : '' }}> Inactive</label>
                         @error('status')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -106,9 +106,9 @@
 
                     <div class="mb-3">
                         <label class="form-label">Tags</label><br>
-                        <label><input type="checkbox" name="tags[]" value="php"> PHP</label>
-                        <label class="ms-3"><input type="checkbox" name="tags[]" value="laravel"> Laravel</label>
-                        <label class="ms-3"><input type="checkbox" name="tags[]" value="vue"> Vue</label>
+                        <label><input type="checkbox" name="tags[]" value="php" {{ in_array('php', old('tags', [])) ? 'checked' : '' }}> PHP</label>
+                        <label class="ms-3"><input type="checkbox" name="tags[]" value="laravel" {{ in_array('laravel', old('tags', [])) ? 'checked' : '' }}> Laravel</label>
+                        <label class="ms-3"><input type="checkbox" name="tags[]" value="vue" {{ in_array('vue', old('tags', [])) ? 'checked' : '' }}> Vue</label>
                         @error('tags')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -132,8 +132,8 @@
 
                     <div class="mb-3">
                         <label class="form-label">Rating</label>
-                        <input type="range" name="rating" id="rating" min="0" max="10" value="5" class="form-range">
-                        <span id="ratingValue">5</span>
+                        <input type="range" name="rating" id="rating" min="0" max="10" value="{{ old('rating', 5) }}" class="form-range">
+                        <span id="ratingValue">{{ old('rating', 5) }}</span>
                         @error('rating')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror
@@ -141,7 +141,7 @@
 
                     <div class="mb-3">
                         <label class="form-label">Pick Color</label>
-                        <input type="color" name="color" class="form-control form-control-color">
+                        <input type="color" name="color" class="form-control form-control-color" value="{{ old('color', '#000000') }}">
                         @error('color')
                             <div class="text-danger">{{ $message }}</div>
                         @enderror

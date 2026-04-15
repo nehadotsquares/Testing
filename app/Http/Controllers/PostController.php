@@ -30,12 +30,12 @@ class PostController extends Controller
                     return $post->user->name;
                 })
                 ->addColumn('action', function(Post $post) {
-                    $view = '<a href="'.route('posts.show', $post->id).'" class="btn btn-info btn-sm me-1"><i class="fa fa-eye"></i></a>';
-                    $edit = '<a href="'.route('posts.edit', $post->id).'" class="btn btn-primary btn-sm me-1"><i class="fa fa-pen"></i></a>';
+                    $view = '<a href="'.route('posts.show', $post->id).'" class="btn btn-outline-success btn-sm me-1"><i class="fa fa-eye"></i></a>';
+                    $edit = '<a href="'.route('posts.edit', $post->id).'" class="btn btn-outline-primary btn-sm me-1"><i class="fa fa-pen"></i></a>';
                     $delete = '<form action="'.route('posts.destroy', $post->id).'" method="POST" style="display:inline" class="delete-form d-inline">'
                             . csrf_field()
                             . method_field('DELETE')
-                            . '<button class="btn btn-danger btn-sm delete-btn" type="button"><i class="fa fa-trash"></i></button></form>';
+                            . '<button class="btn btn-outline-danger btn-sm delete-btn" data-module="post" type="button"><i class="fa fa-trash"></i></button></form>';
                     return '<div class="d-flex gap-1">'.$view.$edit.$delete.'</div>';
                 })
                 ->rawColumns(['action'])

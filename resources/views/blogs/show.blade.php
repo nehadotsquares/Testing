@@ -7,49 +7,49 @@
 
             <!-- Header -->
             <div class="card-header bg-primary text-white">
-                Post Details
+                Blog Details
             </div>
 
             <!-- Body -->
             <div class="card-body">
-                <h6 class="card-title">{{ $post->title }}</h6>
+                <h6 class="card-title">{{ $blog->title }}</h6>
 
                 <p class="text-muted mb-2">
-                    Author: <strong>{{ $post->user->name }}</strong>
+                    Author: <strong>{{ $blog->user->name }}</strong>
                 </p>
 
                 <hr>
 
                 <p class="card-text">
-                    {!! $post->content !!}
+                    {!! $blog->content !!}
                 </p>
 
-                @if($post->upload || $post->pdf)
+                @if($blog->upload || $blog->pdf)
                     <div class="mt-3">
                         <h6>Attachment:</h6>
 
-                        @if($post->upload)                      
-                            <a href="{{ asset('storage/' . $post->upload->file_path) }}" target="_blank" class="btn btn-outline-info btn-sm mb-1">
+                        @if($blog->upload)                      
+                            <a href="{{ asset('storage/' . $blog->upload->file_path) }}" target="_blank" class="btn btn-outline-info btn-sm mb-1">
                                 View Feature Image
                             </a>
                         @endif
 
-                        @if($post->pdf)
-                            <a href="{{ asset('storage/' . $post->pdf->file_path) }}" target="_blank" class="btn btn-outline-info btn-sm mb-1">
+                        @if($blog->pdf)
+                            <a href="{{ asset('storage/' . $blog->pdf->file_path) }}" target="_blank" class="btn btn-outline-info btn-sm mb-1">
                                 View PDF
                             </a>
                         @endif
                     </div>
                 @endif
 
-                @if($post->postImages->count() > 0)
+                @if($blog->blogImages->count() > 0)
                     <div class="mt-3">
-                        <h6>Post Images:</h6>
+                        <h6>Blog Images:</h6>
 
-                        @foreach($post->postImages as $image)
+                        @foreach($blog->blogImages as $image)
                             <a href="{{ asset('storage/' . $image->file_path) }}" target="_blank" class="mb-1">
                             <img src="{{ asset('storage/' . $image->file_path) }}" 
-                                alt="Post Image" 
+                                alt="Blog Image" 
                                 style="width:100px; margin:5px;">
                             </a>
                         @endforeach
@@ -60,48 +60,48 @@
 
                 <h5>Additional Information</h5>
 
-                @if($post->details)
+                @if($blog->details)
                     <p><strong>CKEditor:</strong></p>
-                    <div class="border p-2">{!! $post->details->ckeditor !!}</div>
+                    <div class="border p-2">{!! $blog->details->ckeditor !!}</div>
 
                     <p class="mt-2">
-                        <strong>Number:</strong> {{ $post->details->number }}
+                        <strong>Number:</strong> {{ $blog->details->number }}
                     </p>
 
                     <p>
-                        <strong>Category:</strong> {{ ucfirst($post->details->category) }}
+                        <strong>Category:</strong> {{ ucfirst($blog->details->category) }}
                     </p>
 
                     <p>
                         <strong>Status:</strong> 
-                        <span class="badge bg-{{ $post->details->status == 'active' ? 'success' : 'secondary' }}">
-                            {{ ucfirst($post->details->status) }}
+                        <span class="badge bg-{{ $blog->details->status == 'active' ? 'success' : 'secondary' }}">
+                            {{ ucfirst($blog->details->status) }}
                         </span>
                     </p>
 
                     <p>
                         <strong>Tags:</strong> 
-                        @foreach($post->details->tags ?? [] as $tag)
+                        @foreach($blog->details->tags ?? [] as $tag)
                             <span class="badge bg-primary">{{ $tag }}</span>
                         @endforeach
                     </p>
 
                     <p>
-                        <strong>Publish Date:</strong> {{ $post->details->publish_date }}
+                        <strong>Publish Date:</strong> {{ $blog->details->publish_date }}
                     </p>
 
                     <p>
-                        <strong>Publish Time:</strong> {{ $post->details->publish_time }}
+                        <strong>Publish Time:</strong> {{ $blog->details->publish_time }}
                     </p>
 
                     <p>
-                        <strong>Rating:</strong> {{ $post->details->rating }}/10
+                        <strong>Rating:</strong> {{ $blog->details->rating }}/10
                     </p>
 
                     <p>
                         <strong>Color:</strong> 
-                        <span style="padding: 4px 20px; border-radius: 5px; display:inline-block; background: {{ $post->details->color }}; "></span>
-                        {{ $post->details->color }}
+                        <span style="padding: 4px 20px; border-radius: 5px; display:inline-block; background: {{ $blog->details->color }}; "></span>
+                        {{ $blog->details->color }}
                     </p>
 
                 @else
@@ -112,16 +112,16 @@
 
             <!-- Footer -->
             <div class="card-footer d-flex justify-content-between">
-                <a href="{{ route('posts.index') }}" class="btn btn-secondary">
+                <a href="{{ route('blogs.index') }}" class="btn btn-secondary">
                     <i class="fa fa-arrow-left"></i>
                 </a>
 
                 <div>
-                    <a href="{{ route('posts.edit', $post->id) }}" class="btn btn-primary btn-sm">
+                    <a href="{{ route('blogs.edit', $blog->id) }}" class="btn btn-primary btn-sm">
                         <i class="fa fa-pen"></i>
                     </a>
 
-                    <form action="{{ route('posts.destroy', $post->id) }}" method="POST" class="delete-form d-inline">
+                    <form action="{{ route('blogs.destroy', $blog->id) }}" method="POST" class="delete-form d-inline">
                         @csrf
                         @method('DELETE')
                         <button type="button" class="btn btn-danger btn-sm delete-btn">

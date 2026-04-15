@@ -5,6 +5,8 @@
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+
 </head>
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
@@ -13,6 +15,12 @@
             <div class="collapse navbar-collapse">
                 <ul class="navbar-nav ms-auto">
                     @if(Auth::check())
+                        <li class="nav-item">
+                            <a href="{{ route('blogs.index') }}" class="nav-link">Blog</a>
+                        </li>
+                        <li class="nav-item">
+                            <a href="{{ route('posts.index') }}" class="nav-link">Posts</a>
+                        </li>
                         <li class="nav-item">
                             <span class="nav-link">Welcome! {{ Auth::user()->name }}
                                 @if(Auth::user()->upload)
@@ -55,13 +63,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script>
         $(document).on('click', '.delete-btn', function () {
             let form = $(this).closest('form');
-
+            let module = $(this).data('module');
+            let message = `This ${module} will be deleted permanently!`;
             Swal.fire({
                 title: 'Are you sure?',
-                text: "This post will be deleted permanently!",
+                text: message,
                 icon: 'warning',
                 showCancelButton: true,
                 confirmButtonColor: '#d33',
@@ -74,23 +84,8 @@
             });
         });
     </script>
-    <!-- <script src="https://cdn.ckeditor.com/ckeditor5/41.0.0/classic/ckeditor.js"></script> -->
-    <!-- <script src="https://cdn.ckeditor.com/ckeditor5/41.3.1/classic/ckeditor.js"></script> -->
-     <script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/classic/ckeditor.js"></script>
+    <script src="https://cdn.ckeditor.com/ckeditor5/41.2.0/classic/ckeditor.js"></script>
     <script>
-        document.querySelectorAll('.editor').forEach((el) => {
-            ClassicEditor
-                .create(el, {
-                    // ckfinder: {
-                    //     uploadUrl: "{{ route('ckeditor.upload') }}?_token={{ csrf_token() }}"
-                    // }
-                    extraPlugins: [ MyCustomUploadAdapterPlugin ]
-                })
-                .catch(error => {
-                    console.error(error);
-                });
-        });
-
         class MyUploadAdapter {
             constructor(loader) {
                 this.loader = loader;

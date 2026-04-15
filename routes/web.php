@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\BlogController;
 use App\Http\Controllers\CKEditorController;
 
 Route::get('/', function () {
@@ -23,5 +24,6 @@ Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 Route::middleware(['auth'])->group(function () {
     Route::resource('posts', PostController::class);
     Route::post('/ckeditor-upload', [CKEditorController::class, 'upload'])->name('ckeditor.upload');
+    Route::resource('blogs', BlogController::class);
 });
 

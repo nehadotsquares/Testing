@@ -2,11 +2,11 @@
 
 @section('content')
 <div class="d-flex justify-content-between align-items-center mb-3">
-    <h1>Posts</h1>
-    <a href="{{ route('posts.create') }}" class="btn btn-primary">Create New Post</a>
+    <h1>Blogs</h1>
+    <a href="{{ route('blogs.create') }}" class="btn btn-primary">Create New Blog</a>
 </div>
 
-<table class="table table-bordered table-striped" id="posts-table">
+<table class="table table-bordered table-striped" id="blogs-table">
     <thead class="table-light">
         <tr>
             <th>ID</th>
@@ -25,10 +25,10 @@
 
 <script>
 $(function() {
-    $('#posts-table').DataTable({
+    $('#blogs-table').DataTable({
         processing: true,
         serverSide: true,
-        ajax: '{!! route('posts.index') !!}',
+        ajax: '{!! route('blogs.index') !!}',
         columns: [
             { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
             { data: 'title', name: 'title' },
